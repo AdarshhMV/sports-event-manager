@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <h2 style="margin-bottom: 1rem;">My Registrations</h2>
+    
+    {% if registrations %}
+        <table style="width: 100%; border-collapse: collapse; margin-top: 1rem; text-align: left;">
+            <thead>
+                <tr style="background-color: var(--light-grey);">
+                    <th style="padding: 12px; border-bottom: 2px solid var(--border-grey);">Sport</th>
+                    <th style="padding: 12px; border-bottom: 2px solid var(--border-grey);">Branch</th>
+                    <th style="padding: 12px; border-bottom: 2px solid var(--border-grey);">Registration Date</th>
+                    <th style="padding: 12px; border-bottom: 2px solid var(--border-grey);">Team Member</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reg in registrations %}
+                <tr>
+                    <td style="padding: 12px; border-bottom: 1px solid #E5E7EB; font-weight: 600;">{{ reg.sport.name }}</td>
+                    <td style="padding: 12px; border-bottom: 1px solid #E5E7EB;">{{ reg.branch }} (Year {{ reg.year }})</td>
+                    <td style="padding: 12px; border-bottom: 1px solid #E5E7EB;">{{ reg.registered_at|date:"M d, Y" }}</td>
+                    <td style="padding: 12px; border-bottom: 1px solid #E5E7EB;">
+                        {% if reg.is_team_member %}
+                            <span style="color: green; font-weight: bold;">Yes</span>
+                        {% else %}
+                            <span style="color: var(--text-grey);">No</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p style="color: var(--text-grey);">You have not registered for any sports yet.</p>
+        <a href="{% url 'sports_registration' %}" class="btn-primary" style="display: inline-block; margin-top: 1rem;">Register Now</a>
+    {% endif %}
+</div>
+{% endblock %}

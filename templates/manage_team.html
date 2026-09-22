@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <h2 style="margin-bottom: 0.5rem;">Manage Team</h2>
+    <p style="color: var(--text-grey); margin-bottom: 1.5rem;">
+        Viewing registrations for: 
+        {% for sport in managed_sports %}
+            <strong>{{ sport.name }}</strong>{% if not forloop.last %}, {% endif %}
+        {% empty %}
+            <em>No sports assigned</em>
+        {% endfor %}
+    </p>
+    
+    {% if registrations %}
+        <table style="width: 100%; border-collapse: collapse; text-align: left;">
+            <thead>
+                <tr style="background-color: var(--light-grey);">
+                    <th style="padding: 12px; border-bottom: 2px solid var(--border-grey);">Student SRN</th>
+                    <th style="padding: 12px; border-bottom: 2px solid var(--border-grey);">Sport</th>
+                    <th style="padding: 12px; border-bottom: 2px solid var(--border-grey);">Branch & Year</th>
+                    <th style="padding: 12px; border-bottom: 2px solid var(--border-grey);">Team Member</th>
+                    <th style="padding: 12px; border-bottom: 2px solid var(--border-grey);">Experience</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reg in registrations %}
+                <tr>
+                    <td style="padding: 12px; border-bottom: 1px solid #E5E7EB; font-weight: 600;">{{ reg.user.srn }}</td>
+                    <td style="padding: 12px; border-bottom: 1px solid #E5E7EB;">{{ reg.sport.name }}</td>
+                    <td style="padding: 12px; border-bottom: 1px solid #E5E7EB;">{{ reg.branch }} (Year {{ reg.year }})</td>
+                    
+                    <!-- UPDATED: Interactive Toggle Buttons -->
+                    <td style="padding: 12px; border-bottom: 1px solid #E5E7EB;">
+                        <form action="{% url 'toggle_team_status' reg.id %}" method="POST" style="margin: 0;">
+                            {% csrf_token %}
+                            {% if reg.is_team_member %}
+                                <button type="submit" style="background: #e6ffed; border: 1px solid #28a745; color: #28a745; padding: 4px 10px; border-radius: 4px; font-weight: bold; cursor: pointer; transition: 0.2s;">
+                                    ✓ Selected (Click to Remove)
+                                </button>
+                            {% else %}
+                                <button type="submit" style="background: #fff0f0; border: 1px solid var(--primary-red); color: var(--primary-red); padding: 4px 10px; border-radius: 4px; font-weight: bold; cursor: pointer; transition: 0.2s;">
+                                    Pending (Click to Select)
+                                </button>
+                            {% endif %}
+                        </form>
+                    </td>
+                    
+                    <td style="padding: 12px; border-bottom: 1px solid #E5E7EB;">
+                        {{ reg.past_experience|default:"None"|truncatechars:30 }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div style="padding: 2rem; text-align: center; background-color: var(--light-grey); border-radius: 8px;">
+            <p style="color: var(--text-grey); margin: 0;">No students have registered for your assigned sports yet.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

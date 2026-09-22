@@ -1,0 +1,442 @@
+/* ==========================================================================
+   Sports Event Manager - Premium Theme v2.0
+   ========================================================================== */
+
+:root {
+    --primary-red: #C8102E;
+    --primary-red-hover: #a00d24;
+    --black: #111111;
+    --dark-grey: #222222;
+    --border-grey: #333333;
+    --text-grey: #6B7280; /* Softened for better readability */
+    --light-grey: #F3F4F6;
+    --white: #FFFFFF;
+    
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    
+    --header-height: 64px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body, html {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background-color: var(--light-grey);
+    color: var(--black);
+    line-height: 1.6;
+    overflow-x: hidden; 
+    -webkit-font-smoothing: antialiased;
+}
+
+a {
+    color: var(--primary-red);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: var(--primary-red-hover);
+}
+
+/* Custom Scrollbar for a premium feel */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: var(--light-grey);
+}
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* ==========================================================================
+   Public Layout (Login & Signup)
+   ========================================================================== */
+.public-navbar {
+    background-color: var(--primary-red);
+    color: var(--white);
+    height: var(--header-height);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-md);
+}
+
+.public-content {
+    max-width: 420px;
+    margin: 4rem auto;
+    padding: 2.5rem;
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: var(--shadow-lg);
+    animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ==========================================================================
+   Authenticated Layout (Dashboard)
+   ========================================================================== */
+   
+/* Top Red Header */
+.dashboard-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--header-height);
+    background-color: var(--primary-red);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    padding: 0 1.5rem;
+    box-shadow: var(--shadow-md);
+    z-index: 1000;
+}
+
+.menu-toggle {
+    background: transparent;
+    border: none;
+    color: var(--white);
+    font-size: 1.8rem;
+    cursor: pointer;
+    margin-right: 1.5rem;
+    transition: transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.menu-toggle:hover {
+    transform: scale(1.1);
+}
+
+.brand-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+/* Page Layout Container */
+.dashboard-container {
+    padding-top: var(--header-height);
+    min-height: 100vh;
+    display: flex;
+}
+
+/* Animated Sliding Sidebar */
+.sidebar {
+    position: fixed;
+    top: var(--header-height);
+    left: -280px; 
+    width: 280px;
+    height: calc(100vh - var(--header-height));
+    background-color: var(--black);
+    color: var(--white);
+    overflow-y: auto;
+    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 900;
+    box-shadow: 4px 0 10px rgba(0,0,0,0.3);
+}
+
+.sidebar.active {
+    left: 0;
+}
+
+.sidebar-menu {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 0;
+}
+
+.sidebar-menu li a, 
+.logout-btn {
+    display: block;
+    padding: 1.2rem 2rem;
+    color: #9CA3AF; /* Specific grey for dark mode sidebar */
+    text-decoration: none;
+    border-left: 4px solid transparent;
+    transition: all 0.3s ease;
+    font-size: 1.05rem;
+    text-align: left;
+}
+
+.sidebar-menu li a:hover, 
+.logout-btn:hover {
+    background-color: var(--dark-grey);
+    color: var(--white);
+    border-left: 4px solid var(--primary-red);
+}
+
+.logout-form {
+    margin: 0;
+}
+
+.logout-btn {
+    width: 100%;
+    background: none;
+    border-top: none;
+    border-right: none;
+    border-bottom: none;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+/* Dark Overlay behind sidebar */
+.sidebar-overlay {
+    position: fixed;
+    top: var(--header-height);
+    left: 0;
+    width: 100%;
+    height: calc(100vh - var(--header-height));
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 800;
+    backdrop-filter: blur(2px); /* Adds a premium blur effect */
+}
+
+.sidebar-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Main Content Area */
+.main-content {
+    flex-grow: 1;
+    padding: 2.5rem;
+    width: 100%;
+    animation: fadeIn 0.8s ease;
+}
+
+.card {
+    background: var(--white);
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow-md);
+    margin-bottom: 1.5rem;
+    border-top: 4px solid var(--primary-red);
+}
+
+/* ==========================================================================
+   Forms, Inputs & Buttons
+   ========================================================================== */
+form { display: flex; flex-direction: column; gap: 1.2rem; }
+.form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+label { font-weight: 600; font-size: 0.95rem; color: var(--dark-grey); }
+
+/* Unified Input Styling for all types */
+input[type="text"], 
+input[type="email"], 
+input[type="password"],
+input[type="file"],
+select, 
+textarea {
+    padding: 0.85rem;
+    border: 1px solid #D1D5DB;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    background-color: #FAFAFA;
+    width: 100%;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--primary-red);
+    background-color: var(--white);
+    box-shadow: 0 0 0 3px rgba(200, 16, 46, 0.1);
+}
+
+/* File Upload Specifics */
+input[type="file"] {
+    padding: 0.6rem;
+    background: var(--white);
+    cursor: pointer;
+}
+
+/* Primary Button */
+.btn-primary {
+    background-color: var(--primary-red);
+    color: var(--white);
+    padding: 0.85rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 0.5rem;
+    text-align: center;
+    display: inline-block;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-red-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(200, 16, 46, 0.3);
+    color: var(--white);
+}
+
+.form-error {
+    color: var(--primary-red);
+    background-color: #FEE2E2;
+    padding: 1rem;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    border-left: 4px solid var(--primary-red);
+}
+
+/* ==========================================================================
+   Tables & Badges (New additions for Roster / My Team)
+   ========================================================================== */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    margin-top: 1rem;
+}
+
+.table th {
+    padding: 14px 12px;
+    background-color: var(--light-grey);
+    border-bottom: 2px solid #D1D5DB;
+    color: var(--dark-grey);
+    font-weight: 600;
+}
+
+.table td {
+    padding: 14px 12px;
+    border-bottom: 1px solid #E5E7EB;
+    vertical-align: middle;
+}
+
+.table tbody tr:hover {
+    background-color: #F9FAFB;
+}
+
+/* Status Badges */
+.badge {
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.badge-success { background: #e6ffed; color: #28a745; border: 1px solid #28a745; }
+.badge-pending { background: #fff0f0; color: var(--primary-red); border: 1px solid var(--primary-red); }
+.badge-info { background: #E0F2FE; color: #0284C7; border: 1px solid #0284C7; }
+
+/* ==========================================================================
+   Animations
+   ========================================================================== */
+@keyframes slideUpFade {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+/* ==========================================================================
+   Responsive Mobile Design
+   ========================================================================== */
+@media (max-width: 768px) {
+    .main-content {
+        padding: 1.5rem 1rem; /* Less padding on small screens */
+    }
+
+    .public-content {
+        margin: 2rem 1rem;
+        padding: 2rem 1.5rem;
+    }
+
+    .card {
+        padding: 1.5rem;
+    }
+    
+    /* Make tables horizontally scrollable on small screens so they don't break */
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin-bottom: 1rem;
+        border-radius: 8px;
+    }
+}
+
+/* ==========================================================================
+   Custom Form Elements (Dropdowns & Checkboxes)
+   ========================================================================== */
+
+/* Custom Dropdown Styling */
+select.custom-select {
+    appearance: none; /* Removes native OS styling */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23333333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1em;
+    padding-right: 2.5rem; /* Make room for the custom arrow */
+    cursor: pointer;
+}
+
+select.custom-select:hover {
+    border-color: var(--primary-red);
+}
+
+/* Custom Checkbox Styling */
+input[type="checkbox"].custom-checkbox {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: var(--primary-red); /* Makes the checkbox red instead of blue */
+    margin-top: 5px;
+}
+
+/* Fix checkbox alignment with its label */
+.form-group:has(.custom-checkbox) {
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.form-group:has(.custom-checkbox) label {
+    margin-bottom: 0;
+    cursor: pointer;
+}
+
+/* Better File Upload Styling */
+input[type="file"].custom-file {
+    border: 1px dashed #D1D5DB;
+    background-color: #F9FAFB;
+    color: var(--text-grey);
+    padding: 1rem;
+    text-align: center;
+}
+input[type="file"].custom-file:hover {
+    border-color: var(--primary-red);
+    background-color: #fff0f0;
+}

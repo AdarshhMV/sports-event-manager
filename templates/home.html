@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="card">
+        <h1>Welcome, {{ request.user.srn }}!</h1>
+        <p><strong>Role:</strong> {{ request.user.get_role_display }}</p>
+        <p>Select an option from the sidebar to continue.</p>
+    </div>
+{% endblock %}

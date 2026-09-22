@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Login | Sports Event Manager{% endblock %}
+
+{% block content %}
+
+<div class="public-content" style="text-align: center;">
+    
+    <h2 style="margin-bottom: 0.5rem; color: var(--black);">Welcome Back</h2>
+    <p style="color: var(--text-grey); margin-bottom: 2rem; font-size: 0.95rem;">
+        Sign in to your Sports Event Manager account
+    </p>
+
+    {% if error %}
+        <p class="form-error" style="text-align: left;">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST" style="text-align: left;">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="srn">SRN</label>
+            <input type="text" id="srn" name="srn" placeholder="Enter your SRN" required>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+        </div>
+
+        <button type="submit" class="btn-primary" style="width: 100%; margin-top: 1rem; padding: 1rem;">
+            Sign In
+        </button>
+    </form>
+
+    <p style="margin-top: 2rem; font-size: 0.95rem; color: var(--text-grey);">
+        Don't have an account? 
+        <a href="{% url 'signup' %}" style="font-weight: 600;">Create one</a>
+    </p>
+
+</div>
+
+{% endblock %}

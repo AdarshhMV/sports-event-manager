@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Sign Up | Sports Event Manager{% endblock %}
+
+{% block content %}
+
+<!-- Using our premium 'public-content' card style -->
+<div class="public-content" style="text-align: center;">
+    
+    <h2 style="margin-bottom: 0.5rem; color: var(--black);">Create Account</h2>
+    <p style="color: var(--text-grey); margin-bottom: 2rem; font-size: 0.95rem;">
+        Register to join the Sports Event Manager
+    </p>
+
+    {% if error %}
+        <p class="form-error" style="text-align: left;">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST" style="text-align: left;">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="full_name">Full Name</label>
+            <input type="text" id="full_name" name="full_name" placeholder="e.g., John Doe" required>
+        </div>
+
+        <div class="form-group">
+            <label for="srn">SRN</label>
+            <input type="text" id="srn" name="srn" placeholder="Enter your SRN" required>
+        </div>
+
+        <div class="form-group">
+            <label for="email">College Email</label>
+            <input type="email" id="email" name="email" placeholder="Enter your college email" required>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Create a password" required>
+        </div>
+
+        <div class="form-group">
+            <label for="confirm_password">Confirm Password</label>
+            <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm your password" required>
+        </div>
+
+        <!-- Full width premium button -->
+        <button type="submit" class="btn-primary" style="width: 100%; margin-top: 1rem; padding: 1rem;">
+            Create Account
+        </button>
+    </form>
+
+    <p style="margin-top: 2rem; font-size: 0.95rem; color: var(--text-grey);">
+        Already have an account? 
+        <a href="{% url 'login' %}" style="font-weight: 600;">Login here</a>
+    </p>
+
+</div>
+
+{% endblock %}

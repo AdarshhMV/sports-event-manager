@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <h2 style="margin-bottom: 0.5rem;">My Team (Confirmed Roster)</h2>
+    <p style="color: var(--text-grey); margin-bottom: 2rem;">
+        {% if user.role == 'STUDENT' %}
+            Congratulations! Here are the official teams you have been selected for.
+        {% else %}
+            The finalized list of selected students for your assigned sports.
+        {% endif %}
+    </p>
+
+    {% if team_rosters %}
+        {% for sport, members in team_rosters.items %}
+            
+            <!-- Sport Table Container -->
+            <div style="margin-bottom: 2.5rem; border: 1px solid #E5E7EB; border-radius: 8px; overflow: hidden; box-shadow: var(--shadow-sm);">
+                
+                <!-- Sport Name Header -->
+                <div style="background-color: #FAFAFA; border-bottom: 3px solid var(--primary-red); padding: 1rem 1.5rem; display: flex; align-items: center; justify-content: space-between;">
+                    <h3 style="margin: 0; color: var(--black); font-size: 1.25rem;">{{ sport.name }}</h3>
+                    <span class="badge badge-info">{{ members|length }} Players</span>
+                </div>
+                
+                {% if members %}
+                    <div class="table-responsive">
+                        <table class="table" style="margin-top: 0; border-top: none;">
+                            <thead>
+                                <tr>
+                                    <th>Player Name</th>
+                                    <th>SRN</th>
+                                    <th>Branch & Year</th>
+                                    <th>Role</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for member in members %}
+                                <tr>
+                                    <td style="font-weight: 600; color: var(--black);">
+                                        {{ member.user.full_name|default:"Unknown" }}
+                                        {% if member.user == request.user %}
+                                            <span class="badge badge-success" style="margin-left: 8px; font-size: 0.75rem;">You</span>
+                                        {% endif %}
+                                    </td>
+                                    <td style="color: var(--text-grey);">{{ member.user.srn }}</td>
+                                    <td>{{ member.branch }} (Year {{ member.year }})</td>
+                                    <td>
+                                        <span class="badge" style="background: #E5E7EB; color: #374151;">
+                                            {{ member.user.get_role_display }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div style="padding: 2.5rem; color: var(--text-grey); text-align: center;">
+                        No players have been selected for this team yet.
+                    </div>
+                {% endif %}
+            </div>
+
+        {% endfor %}
+    {% else %}
+        <div style="padding: 2.5rem; text-align: center; background-color: var(--light-grey); border-radius: 8px;">
+            <p style="color: var(--text-grey); margin: 0; font-size: 1.05rem;">
+                {% if user.role == 'STUDENT' %}
+                    You have not been selected for any final teams yet. Keep checking back!
+                {% else %}
+                    You do not have any assigned sports to manage.
+                {% endif %}
+            </p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

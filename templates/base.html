@@ -1,0 +1,99 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sports Event Manager</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+    <!-- TOP NAVIGATION -->
+    {% if not user.is_authenticated %}
+        <nav class="public-navbar">
+            <h2>Sports Event Manager</h2>
+        </nav>
+    {% else %}
+        <header class="dashboard-header">
+            <!-- Hamburger Icon -->
+            <button id="sidebarToggle" class="menu-toggle" aria-label="Toggle Menu">
+                &#9776;
+            </button>
+            <div class="brand-title">Sports Event Manager</div>
+        </header>
+    {% endif %}
+
+    <!-- MAIN LAYOUT WRAPPER -->
+    <div class="{% if user.is_authenticated %}dashboard-container{% endif %}">
+        
+        <!-- SIDEBAR (Only for authenticated users) -->
+        {% if user.is_authenticated %}
+            <nav id="sidebar" class="sidebar">
+                <ul class="sidebar-menu">
+                    <li><a href="{% url 'home' %}">Dashboard Home</a></li>
+                    <li><a href="{% url 'sports_registration' %}">Sports Registration</a></li>
+                    <li><a href="#">Event Details</a></li>
+                    <li><a href="#">Ticket Booking</a></li>
+                    <li><a href="#">Match Results</a></li>
+                    
+                    <!-- NEW: Manage Team (Only visible to Authorities/Captains/Coaches) -->
+                    {% if user.role != 'STUDENT' %}
+                    <li><a href="{% url 'manage_team' %}" style="color: #FF6B6B;">⚙ Manage Team</a></li>
+                    {% endif %}
+                    
+                    <!-- NEW: Confirmed Roster Page -->
+                    <li><a href="{% url 'my_team' %}">My Team (Roster)</a></li>
+                    
+                    <li><a href="{% url 'my_registrations' %}">My Registrations</a></li>
+                    <li><a href="#">My Tickets</a></li>
+                    <li><a href="{% url 'profile' %}">My Profile</a></li>
+                    <li>
+                        <form action="{% url 'logout' %}" method="post" class="logout-form">
+                            {% csrf_token %}
+                            <button type="submit" class="logout-btn">Logout</button>
+                        </form>
+                    </li>
+                </ul>
+            </nav>
+            
+            <!-- Dark overlay -->
+            <div id="sidebarOverlay" class="sidebar-overlay"></div>
+        {% endif %}
+
+        <!-- DYNAMIC MAIN CONTENT AREA -->
+        <main class="{% if user.is_authenticated %}main-content{% else %}public-content{% endif %}">
+            
+            {% block content %}
+            <!-- Child templates inject content here -->
+            {% endblock %}
+            
+        </main>
+        
+    </div>
+
+    <!-- SCRIPTS -->
+    {% if user.is_authenticated %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleBtn = document.getElementById('sidebarToggle');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+
+            function toggleMenu() {
+                sidebar.classList.toggle('active');
+                overlay.classList.toggle('active');
+            }
+
+            if(toggleBtn) {
+                toggleBtn.addEventListener('click', toggleMenu);
+            }
+            if(overlay) {
+                overlay.addEventListener('click', toggleMenu);
+            }
+        });
+    </script>
+    {% endif %}
+
+</body>
+</html>
